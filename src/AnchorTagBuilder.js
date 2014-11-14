@@ -77,6 +77,12 @@ Autolinker.AnchorTagBuilder = Autolinker.Util.extend( Object, {
 	 * @return {Object} A key/value Object (map) of the anchor tag's attributes. 
 	 */
 	createAttrs : function( matchType, anchorHref ) {
+		function sameOrigin(url) {
+			var a = document.createElement('a');
+			a.href = url;
+			return a.hostname == window.location.hostname;
+		}
+
 		var attrs = {
 			'href' : anchorHref  // we'll always have the `href` attribute
 		};
@@ -85,7 +91,8 @@ Autolinker.AnchorTagBuilder = Autolinker.Util.extend( Object, {
 		if( cssClass ) {
 			attrs[ 'class' ] = cssClass;
 		}
-		if( this.newWindow ) {
+
+		if( this.newWindow && (this.sameOriginNewWindow || !sameOrigin(anchorHref))) {
 			attrs[ 'target' ] = "_blank";
 		}
 		

@@ -390,5 +390,28 @@ describe( "Autolinker.HtmlTag", function() {
 		} );
 		
 	} );
-	
+
+	describe( 'newWindow', function() {
+		var autolinker;
+
+		beforeEach( function() {
+			autolinker = new Autolinker( { newWindow: false } );  // so that target="_blank" is not added to resulting autolinked URLs
+		} );
+
+		it( "New window, not when same origin", function() {
+			autolinker = new Autolinker( { newWindow: true } );
+			var result = autolinker.link( "http://www.yahoo.com/" );
+			expect( result ).toBe( '<a href="http://www.yahoo.com/" target="_blank">yahoo.com</a>' );
+		} );
+/*
+		it( "New window, same origin", function() {
+			var temp = window.location;
+			window.location = { hostname : "www.yahoo.com", port : 0, protocol : "http:" };
+
+			autolinker = new Autolinker( { newWindow: true } );
+			var result = autolinker.link( "http://www.yahoo.com/" );
+			window.location = temp;
+			expect( result ).toBe( '<a href="http://www.yahoo.com/">yahoo.com</a>' );
+		} );*/
+	});
 } );

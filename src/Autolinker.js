@@ -124,6 +124,8 @@ Autolinker.prototype = {
 	 * `true` if the links should open in a new window, `false` otherwise.
 	 */
 	newWindow : true,
+
+	sameOriginNewWindow : false,
 	
 	/**
 	 * @cfg {Boolean} stripPrefix
