@@ -150,6 +150,8 @@
 		 */
 		newWindow : true,
 
+		sameOriginNewWindow : false,
+
 		/**
 		 * @cfg {Boolean} stripPrefix
 		 * 
@@ -1399,6 +1401,17 @@
 		 * @return {Object} A key/value Object (map) of the anchor tag's attributes. 
 		 */
 		createAttrs : function( matchType, anchorHref ) {
+			function sameOrigin(url) {
+				var loc = window.location,
+					a = document.createElement('a');
+
+				a.href = url;
+
+				return a.hostname == loc.hostname &&
+					a.port == loc.port &&
+					a.protocol == loc.protocol;
+			}
+
 			var attrs = {
 				'href' : anchorHref  // we'll always have the `href` attribute
 			};
@@ -1407,7 +1420,8 @@
 			if( cssClass ) {
 				attrs[ 'class' ] = cssClass;
 			}
-			if( this.newWindow ) {
+
+			if( this.newWindow && (this.sameOriginNewWindow || !sameOrigin(anchorHref))) {
 				attrs[ 'target' ] = "_blank";
 			}
 
